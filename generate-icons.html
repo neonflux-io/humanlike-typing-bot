@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Typing Bot Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .icon-item {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .instructions {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Typing Bot Extension Icons</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Click "Generate Icons" to create the icon previews</li>
+                <li>Right-click on each canvas and select "Save image as..."</li>
+                <li>Save as <code>icon16.png</code>, <code>icon48.png</code>, and <code>icon128.png</code></li>
+                <li>Place the PNG files in your extension folder</li>
+                <li>Update the manifest.json to use PNG files instead of SVG</li>
+            </ol>
+        </div>
+        
+        <button onclick="generateIcons()">🎨 Generate Icons</button>
+        <button onclick="downloadAll()">📥 Download All Icons</button>
+        
+        <div class="icon-preview">
+            <div class="icon-item">
+                <h3>16x16 Icon</h3>
+                <canvas id="icon16" width="16" height="16"></canvas>
+            </div>
+            <div class="icon-item">
+                <h3>48x48 Icon</h3>
+                <canvas id="icon48" width="48" height="48"></canvas>
+            </div>
+            <div class="icon-item">
+                <h3>128x128 Icon</h3>
+                <canvas id="icon128" width="128" height="128"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 128; // Scale factor based on 128x128 original
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Draw background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw keyboard keys
+            const keySize = size * 0.15;
+            const keySpacing = size * 0.2;
+            const startX = size * 0.2;
+            const startY = size * 0.3;
+            
+            // Draw some keyboard keys
+            const keys = [
+                { x: 0, y: 0, char: 'T' },
+                { x: 1, y: 0, char: 'Y' },
+                { x: 2, y: 0, char: 'P' },
+                { x: 0, y: 1, char: 'I' },
+                { x: 1, y: 1, char: 'N' },
+                { x: 2, y: 1, char: 'G' }
+            ];
+            
+            keys.forEach(key => {
+                const x = startX + key.x * keySpacing;
+                const y = startY + key.y * keySpacing;
+                
+                // Draw key background
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fillRect(x, y, keySize, keySize);
+                
+                // Draw key border
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, keySize, keySize);
+                
+                // Draw character
+                ctx.fillStyle = '#333';
+                ctx.font = `bold ${keySize * 0.4}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(key.char, x + keySize / 2, y + keySize / 2);
+            });
+            
+            // Draw bot icon
+            const botSize = size * 0.25;
+            const botX = size * 0.75;
+            const botY = size * 0.25;
+            
+            // Draw robot head
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillRect(botX, botY, botSize, botSize);
+            
+            // Draw robot eyes
+            ctx.fillStyle = '#4CAF50';
+            const eyeSize = botSize * 0.15;
+            ctx.fillRect(botX + botSize * 0.25, botY + botSize * 0.3, eyeSize, eyeSize);
+            ctx.fillRect(botX + botSize * 0.6, botY + botSize * 0.3, eyeSize, eyeSize);
+            
+            // Draw robot mouth
+            ctx.fillStyle = '#4CAF50';
+            ctx.fillRect(botX + botSize * 0.3, botY + botSize * 0.6, botSize * 0.4, 2);
+        }
+        
+        function generateIcons() {
+            const sizes = [16, 48, 128];
+            
+            sizes.forEach(size => {
+                const canvas = document.getElementById(`icon${size}`);
+                drawIcon(canvas, size);
+            });
+            
+            alert('Icons generated! Right-click on each canvas to save as PNG.');
+        }
+        
+        function downloadAll() {
+            const sizes = [16, 48, 128];
+            
+            sizes.forEach(size => {
+                const canvas = document.getElementById(`icon${size}`);
+                const link = document.createElement('a');
+                link.download = `icon${size}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+        
+        // Generate icons on page load
+        window.onload = function() {
+            generateIcons();
+        };
+    </script>
+</body>
+</html> 
