@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Bot</title>
+    <style>
+        body {
+            width: 400px;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .slider-container input[type="range"] {
+            flex: 1;
+        }
+        
+        .slider-container span {
+            min-width: 60px;
+            text-align: right;
+            font-weight: 600;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .start-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .start-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        .stop-btn {
+            background: #f44336;
+            color: white;
+        }
+        
+        .stop-btn:hover {
+            background: #da190b;
+            transform: translateY(-2px);
+        }
+        
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status.active {
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid #4CAF50;
+        }
+        
+        .status.inactive {
+            background: rgba(244, 67, 54, 0.3);
+            border: 1px solid #f44336;
+        }
+        
+        .detected-text {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 15px 0;
+            font-size: 12px;
+            line-height: 1.4;
+            max-height: 80px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        .human-like-features {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 12px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+        }
+        
+        .feature-list li {
+            margin: 3px 0;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Typing Bot</h1>
+        
+        <div class="human-like-features">
+            <strong>🎯 Human-Like Features:</strong>
+            <ul class="feature-list">
+                <li>Variable typing speed</li>
+                <li>Realistic typing errors</li>
+                <li>Automatic error correction</li>
+                <li>Natural pauses and rhythm</li>
+            </ul>
+        </div>
+        
+        <div class="input-group">
+            <label for="speed">Base Typing Speed:</label>
+                         <div class="slider-container">
+                 <input type="range" id="speed" min="30" max="200" value="80" step="10">
+                 <span id="speedValue">80ms</span>
+             </div>
+        </div>
+        
+        <div class="settings-section">
+            <div class="settings-title">🎭 Human-Like Settings</div>
+            
+            <div class="input-group">
+                <label for="errorRate">Error Rate:</label>
+                             <div class="slider-container">
+                 <input type="range" id="errorRate" min="0" max="0.10" value="0.02" step="0.01">
+                 <span id="errorRateValue">2.0%</span>
+             </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="speedVariation">Speed Variation:</label>
+                <div class="slider-container">
+                    <input type="range" id="speedVariation" min="0.1" max="0.5" value="0.3" step="0.05">
+                    <span id="speedVariationValue">30%</span>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="pauseProbability">Pause Probability:</label>
+                <div class="slider-container">
+                    <input type="range" id="pauseProbability" min="0" max="0.2" value="0.1" step="0.01">
+                    <span id="pauseProbabilityValue">10.0%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="detectedText">Detected Text:</label>
+            <div id="detectedText" class="detected-text">
+                Scanning for typing text...
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="startBtn" class="start-btn">🚀 Start Typing</button>
+            <button id="stopBtn" class="stop-btn" disabled style="display: none;">⏹️ Stop</button>
+        </div>
+        
+        <div id="status" class="status inactive">
+            Ready to type! 🎯
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html> 
